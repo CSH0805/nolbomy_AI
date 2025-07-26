@@ -3,7 +3,7 @@ import pyaudio
 from google.cloud import speech
 
 # Google Cloud STT 서비스 키 JSON 경로
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'your-key-file.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'curious-arch-447209-j4-1bd9c946b299.json'
 
 # 오디오 설정
 RATE = 16000
