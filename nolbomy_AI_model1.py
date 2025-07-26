@@ -2,26 +2,27 @@ import os
 import pyaudio
 from google.cloud import speech
 
-# Google Cloud STT 서비스 키 JSON 경로
+# 🔑 Google Cloud STT 서비스 키 JSON 경로
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'curious-arch-447209-j4-1bd9c946b299.json'
 
-# 오디오 설정
+# 🎙️ 오디오 설정
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
 client = speech.SpeechClient()
 
+# 🎛️ STT 스트리밍 설정
 streaming_config = speech.StreamingRecognitionConfig(
     config=speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=RATE,
         language_code="ko-KR",
     ),
-    interim_results=False  # 중간결과는 무시
+    interim_results=False  # 중간 결과 무시
 )
 
 def mic_stream():
-    """마이크에서 음성 실시간 수집"""
+    """마이크에서 실시간 음성 수집"""
     p = pyaudio.PyAudio()
     stream = p.open(format=pyaudio.paInt16,
                     channels=1,
@@ -36,11 +37,11 @@ def mic_stream():
 
 def detect_keyword(transcript):
     """특정 키워드 포함 여부 확인"""
-    keywords = ["도와줘", "살려줘"]
+    keywords = ["도와줘", "살려줘", "살려주세요"]
     return any(keyword in transcript for keyword in keywords)
 
 def listen_and_detect():
-    """STT 결과를 듣고 키워드만 반응"""
+    """실시간 STT 결과에서 키워드 감지"""
     requests = mic_stream()
     responses = client.streaming_recognize(streaming_config, requests)
 
@@ -55,5 +56,5 @@ def listen_and_detect():
                 else:
                     print("✅ 일반 음성, 무시함")
 
-# 실행
+# 🟢 실행
 listen_and_detect()
